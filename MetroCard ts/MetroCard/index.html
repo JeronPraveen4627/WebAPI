@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="Type Script/index.js"></script>
+    <link rel="stylesheet" href="CSS/index.css">
+</head>
+<div class="container">
+    <div id="welcomepage" class="welcomepage">
+        <h1>Metro Card Management System</h1>
+        <button onclick="newUser()">New User</button>
+        <button onclick="login()">Login User</button>
+    </div>
+
+    <div id="signupPage" >
+            <label>User Name:</label><br>
+            <input type="text" id="userName"><br><br>
+            <label>Email:</label><br>
+            <input type="text" id="userEmail"><br><br>
+            <label> Password:</label><br>
+            <input type="password" id="userPassword"><br><br>
+            <label>Phone Number:</label><br>
+            <input type="text" id="userPhoneNumber"><br><br>
+            <button onclick="signUp()">Signup</button>
+    </div>
+
+    <div id="loginPage">
+        <h1>Login Page</h1>
+        <label>Email:</label><br>
+        <input type="text" id="userLoginEmail"><br><br>
+        <label>Password:</label><br>
+        <input type="password" id="userLoginPassword"><br><br>
+        <button onclick="checkPassword()">Login</button>
+        <button onclick="showHomePage()">Home</button>
+    </div>
+    <div id="menuPage">
+        <Label id="welcomeUser"></Label><br><br>
+        <button onclick="showHomePage()">Home</button>
+        <button onclick="balanceCheck()">Balance Check</button>
+        <button onclick="recharge()">Recharge</button>
+        <button onclick="travel()">Travel</button>
+        <button onclick="travelHistory()">Travel History</button>
+    </div>
+
+    <div id="balancePage">
+        <h2>Your Balance Amount</h2>
+        <label id="balanceAmount"></label><br><br>
+        <button onclick="menu()">Back</button>
+
+    </div>
+
+    <div id="rechargePage">
+        <label>Recharge Amount:</label>
+        <input type="text"  id="rechargeAmount"><br><br>
+        <button onclick="menu()">Back</button>
+        <button onclick="rechargeAmount()">Recharge</button>
+    </div>
+    
+    <div id="travelHistoryPage">
+        <h1>Travel History</h1>
+        <table id="travelTable">
+        </table><br>
+        <button onclick="menu()">Back</button>
+    </div>
+
+    <div id="travelPage">
+        <h1>Travel Page</h1>
+        <table id="travelFair"></table>
+        <button onclick="menu()">Back</button>
+    </div>
+
+
+</div>
+
+<body>
+
+</body>
+
+</html>
+
+

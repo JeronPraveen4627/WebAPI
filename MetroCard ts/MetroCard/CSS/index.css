@@ -1,0 +1,46 @@
+.welcomepage
+{
+justify-content: center;
+}
+#signupPage
+{
+    display: none;
+}
+#loginPage
+{
+    display: none;
+}
+#menuPage
+{
+    display:none;
+}
+#balancePage
+{
+    display:none;
+}
+#rechargePage
+{
+    display:none;
+}
+#travelHistoryPage
+{
+    display:none;
+}
+button
+{
+    background-color: #f0ae28; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+#travelPage
+{
+    display: none;
+}
+table, th, td {
+    border: 1px solid;
+  }
