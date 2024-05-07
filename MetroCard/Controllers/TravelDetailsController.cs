@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees;
+using System.Linq;
+using System.Threading.Tasks;
 using MetroCard.Data;
-using Microsoft.AspNetCore.Components;
+using MetroCard.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
@@ -10,67 +15,68 @@ namespace MetroCard.Conrtoller;
 
 public class TravelDetailsController : ControllerBase
 {
-
-   private static List<TravelDetails> _TravelArrayList=new List<TravelDetails>()
-   {
-            new TravelDetails{CardNumber=1001,FromLocation="Airport",ToLocation="Egmore",Date="2023,10,10",TravelCost=55},
-            new TravelDetails{CardNumber=1001,FromLocation="Egmore",ToLocation="Koyambedu",Date="2023,10,10",TravelCost=32}
-    };
+    private readonly ApplicationDBContext _DbContext;
+   public TravelDetailsController(ApplicationDBContext applicationDBContext)
+    {
+        _DbContext=applicationDBContext;
+    }
     [HttpGet]
         public IActionResult GetContacts()
         {
-            return Ok(_TravelArrayList);
+            return Ok(_DbContext.travels.ToList());
         }
 
         // GET: api/TravelTravel/1
-        [HttpGet("{id}")]
-        public IActionResult GetTravel(int id)
+       
+       [HttpGet("{id}")]
+        public IActionResult GetUserDetails(int id)
         {
-            var TravelDetails = _TravelArrayList.Find(m => m.TravelID == id);
-            if (TravelDetails == null)
+            var travelDetails = _DbContext.travels.FirstOrDefault(m => m.CardNumber == id);
+            if (travelDetails == null)
             {
                 return NotFound();
             }
-            return Ok(TravelDetails);
+            _DbContext.SaveChanges();
+            return Ok(travelDetails);
         }
 
-        //Adding a new TravelDetails
-        // POST: api/TravelTravel
+
         [HttpPost]
-        public IActionResult PostTravel([FromBody] TravelDetails Travel)
+        public IActionResult PostTravel([FromBody] TravelDetails travel)
         {
-            _TravelArrayList.Add(Travel);
-            // You might want to return CreatedAtAction or another appropriate response
+            _DbContext.Add(travel);
+            _DbContext.SaveChanges();
             return Ok();
         }
 
-        // Updating an existing _travel
-        // PUT: api/TravelDetails/1
         [HttpPut("{id}")]
-        public IActionResult PutTravel(int id, [FromBody] TravelDetails TravelDetails)
+        public IActionResult PutTravel(int id, [FromBody] TravelDetails travelDetails)
         {
-            var index = _TravelArrayList.FindIndex(m => m.TravelID == id);
-            if (index < 0)
+            var index = _DbContext.travels.FirstOrDefault(m => m.TravelID == id);
+            if (index== null)
             {
                 return NotFound();
             }
-            _TravelArrayList[index] = TravelDetails;
-            // You might want to return NoContent or another appropriate response
+            index.TravelID=travelDetails.TravelID;   
+            index.CardNumber=travelDetails.CardNumber;  
+            index.FromLocation=travelDetails.FromLocation;
+            index.ToLocation=travelDetails.ToLocation;
+            index.Date=travelDetails.Date;
+            index.TravelCost=travelDetails.TravelCost;         
+           _DbContext.SaveChanges();
             return Ok();
         }
 
-        // Deleting an existing _travel
-        // DELETE: api/TravelDetails/1
         [HttpDelete("{id}")]
-        public IActionResult DeleteContact(int id)
+        public IActionResult DeleteTravel(int id)
         {
-            var _travel = _TravelArrayList.Find(m => m.TravelID == id);
+            var _travel = _DbContext.travels.FirstOrDefault(m => m.TravelID == id);
             if (_travel == null)
             {
                 return NotFound();
             }
-            _TravelArrayList.Remove(_travel);
-            // You might want to return NoContent or another appropriate response
+            _DbContext.Remove(_travel);
+            _DbContext.SaveChanges();
             return Ok();
         }
     }
