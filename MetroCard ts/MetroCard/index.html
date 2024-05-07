@@ -8,23 +8,30 @@
     <script src="Type Script/index.js"></script>
     <link rel="stylesheet" href="CSS/index.css">
 </head>
-<div class="container">
-    <div id="welcomepage" class="welcomepage">
-        <h1>Metro Card Management System</h1>
+<body>
+        
+        <h1 style="text-align: center;">Metro Card Management System</h1>
+        <button onclick="showHomePage()" class="logout" >Logout</button>
+    <div id="welcomepage" >
+        <!-- <h1>Metro Card Management System</h1> -->
         <button onclick="newUser()">New User</button>
         <button onclick="login()">Login User</button>
     </div>
 
-    <div id="signupPage" >
+    <div id="signupPage" class="signup" >
+        
+            <h2>Sign Up Page</h2>
             <label>User Name:</label><br>
-            <input type="text" id="userName"><br><br>
+            <input type="text" id="userName" required><br><br>
             <label>Email:</label><br>
-            <input type="text" id="userEmail"><br><br>
+            <input type="text" id="userEmail" required><br><br>
             <label> Password:</label><br>
-            <input type="password" id="userPassword"><br><br>
+            <input type="password" id="userPassword" required><br><br>
             <label>Phone Number:</label><br>
-            <input type="text" id="userPhoneNumber"><br><br>
+            <input type="text" id="userPhoneNumber" required><br><br>
             <button onclick="signUp()">Signup</button>
+            <button onclick="showHomePage()">Back</button>
+     
     </div>
 
     <div id="loginPage">
@@ -34,25 +41,28 @@
         <label>Password:</label><br>
         <input type="password" id="userLoginPassword"><br><br>
         <button onclick="checkPassword()">Login</button>
-        <button onclick="showHomePage()">Home</button>
+        <button onclick="showHomePage()">Back</button>
     </div>
     <div id="menuPage">
-        <Label id="welcomeUser"></Label><br><br>
-        <button onclick="showHomePage()">Home</button>
-        <button onclick="balanceCheck()">Balance Check</button>
-        <button onclick="recharge()">Recharge</button>
-        <button onclick="travel()">Travel</button>
-        <button onclick="travelHistory()">Travel History</button>
+        
+        <button class="btns" onclick="menu()">Home</button>
+        <button class="btns" onclick="balanceCheck()">Balance Check</button>
+        <button class="btns"onclick="recharge()">Recharge</button>
+        <button class="btns" onclick="travel()">Travel</button>
+        <button class="btns" onclick="travelHistory()">Travel History</button>
+        <h1 id="welcomeUser"></h1><br>
     </div>
 
     <div id="balancePage">
         <h2>Your Balance Amount</h2>
         <label id="balanceAmount"></label><br><br>
-        <button onclick="menu()">Back</button>
-
     </div>
 
     <div id="rechargePage">
+        <div id="balancePage">
+            <h2>Your Balance Amount</h2>
+            <label id="balanceAmount"></label><br><br>
+        </div>
         <label>Recharge Amount:</label>
         <input type="text"  id="rechargeAmount"><br><br>
         <button onclick="menu()">Back</button>
@@ -62,20 +72,17 @@
     <div id="travelHistoryPage">
         <h1>Travel History</h1>
         <table id="travelTable">
-        </table><br>
-        <button onclick="menu()">Back</button>
+        </table><br><br>
     </div>
 
     <div id="travelPage">
         <h1>Travel Page</h1>
-        <table id="travelFair"></table>
-        <button onclick="menu()">Back</button>
+        <table id="travelFair"></table><br><br>
+ 
     </div>
-
 
 </div>
 
-<body>
 
 </body>
 

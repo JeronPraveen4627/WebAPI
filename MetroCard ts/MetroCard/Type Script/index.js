@@ -24,12 +24,12 @@ function signUp() {
     let userPassword = document.getElementById("userPassword").value;
     let userNumber = document.getElementById("userPhoneNumber").value;
     let signupUser = {
-        cardNumber: -1,
+        cardNumber: 0,
         userEmail: userEmail,
         userPassword: userPassword,
         userBalance: 0,
         userName: userName,
-        phoneNumber: Number(userNumber)
+        phoneNumber: (userNumber)
     };
     addUserDetails(signupUser);
     showHomePage();
@@ -94,29 +94,44 @@ function balanceCheck() {
     let menuPage = document.getElementById("menuPage");
     let balancePage = document.getElementById("balancePage");
     let amount = document.getElementById("balanceAmount");
+    let rechargePage = document.getElementById("rechargePage");
+    let travelPage = document.getElementById("travelHistoryPage");
+    let travellPage = document.getElementById("travelPage");
     amount.innerHTML = CurrentLoggedInUser.userBalance.toString();
-    menuPage.style.display = "none";
+    travellPage.style.display = "none";
+    travelPage.style.display = "none";
+    rechargePage.style.display = "none";
+    menuPage.style.display = "block";
     balancePage.style.display = "block";
 }
 function rechargeAmount() {
     let amount = document.getElementById("rechargeAmount").value;
     CurrentLoggedInUser.userBalance += +amount;
     alert("Amount is Added to your wallet Successfully");
-    menu();
+    recharge();
 }
 function recharge() {
     let balancePage = document.getElementById("balancePage");
     let rechargePage = document.getElementById("rechargePage");
     let menuPage = document.getElementById("menuPage");
-    menuPage.style.display = "none";
-    balancePage.style.display = "none";
+    let amount = document.getElementById("balanceAmount");
+    let travelPage = document.getElementById("travelHistoryPage");
+    let travellPage = document.getElementById("travelPage");
+    amount.innerHTML = CurrentLoggedInUser.userBalance.toString();
+    travellPage.style.display = "none";
+    travelPage.style.display = "none";
+    menuPage.style.display = "block";
+    balancePage.style.display = "block";
     rechargePage.style.display = "block";
 }
 function travel() {
     return __awaiter(this, void 0, void 0, function* () {
         let travelPage = document.getElementById("travelPage");
         let menuPage = document.getElementById("menuPage");
+        let balancePage = document.getElementById("balancePage");
+        let rechargePage = document.getElementById("rechargePage");
         let fair = document.getElementById("travelFair");
+        let travelHistoryPage = document.getElementById("travelHistoryPage");
         fair.innerHTML = "";
         fair.innerHTML = `<tr><td>From Location</td>
                         <td>To Location</td>
@@ -127,13 +142,16 @@ function travel() {
             let fair = document.getElementById("travelFair");
             fair.innerHTML += `<tr>
                             <td>${ticket[i].fromLocation}</td>
-                            <td>${ticket[i].tolocation}</td>
+                            <td>${ticket[i].toLocation}</td>
                             <td>${ticket[i].price}</td>
                             <td>
-                            <button onclick="buyTicket(${ticket[i].ticketID})"> Buy Ticket</button></td>
+                            <button onclick="buyTicket(${ticket[i].ticketID})" class="buybutton"> Buy Ticket</button></td>
                             </tr>`;
         }
-        menuPage.style.display = "none";
+        travelHistoryPage.style.display = "none";
+        balancePage.style.display = "none";
+        rechargePage.style.display = "none";
+        menuPage.style.display = "block";
         travelPage.style.display = "block";
     });
 }
@@ -148,17 +166,19 @@ function buyTicket(ticketID) {
                 travelcost += ticket[i].travelCost;
                 CurrentLoggedInUser.userBalance -= ticket[i].travelCost;
                 let userticket = {
-                    travelID: ticketID,
-                    cardNumber: ticket[i].cardNumber,
+                    travelID: 0,
+                    cardNumber: CurrentLoggedInUser.cardNumber,
                     fromLocation: ticket[i].fromLocation,
-                    toLoaction: ticket[i].toLoaction,
-                    date: ticket[i].date,
+                    toLocation: ticket[i].toLocation,
+                    date: ticket[i].date.toString().substring(0, 10),
                     travelCost: ticket[i].travelCost
+                    // split('T')[0].split('-').reverse().join('/')
                 };
                 addTravel(userticket);
                 alert("Ticket is Booked");
                 menu();
             }
+            // 
         }
         if (flag == false) {
             alert("Insufficent Balance!...Please Recharge");
@@ -167,32 +187,39 @@ function buyTicket(ticketID) {
 }
 function travelHistory() {
     return __awaiter(this, void 0, void 0, function* () {
+        let travelHistory = yield fetchTravelDetail();
         let travelPage = document.getElementById("travelHistoryPage");
+        let travellPage = document.getElementById("travelPage");
         let travelTable = document.getElementById("travelTable");
         let menuPage = document.getElementById("menuPage");
-        let travelHistory = yield fetchTravelDetail();
+        let balancePage = document.getElementById("balancePage");
+        let rechargePage = document.getElementById("rechargePage");
         travelTable.innerHTML = "";
         travelTable.innerHTML = `<tr>
                             <td>Travel ID</td>
                             <td>Card Number</td>
                             <td>From Location</td>
-                            <td>tolocation</td>
-                            <td>date</td>
+                            <td>To Location</td>
+                            <td>Date</td>
                             <td>Travel Cost</td></tr>`;
         let flag = true;
         for (let i = 0; i < travelHistory.length; i++) {
-            let fair = document.getElementById("travelFair");
-            fair.innerHTML += `<tr>
+            if (travelHistory[i].cardNumber == CurrentLoggedInUser.cardNumber) {
+                travelTable.innerHTML += `<tr>
                           <td>${travelHistory[i].travelID}</td>
                           <td>${travelHistory[i].cardNumber}</td>
                           <td>${travelHistory[i].fromLocation}</td>
-                          <td>${travelHistory[i].toLoaction}</td>
-                          <td>${travelHistory[i].date}</td>
+                          <td>${travelHistory[i].toLocation}</td>
+                          <td>${travelHistory[i].date.toString().substring(0, 10)}</td>
                           <td>${travelHistory[i].travelCost}</td>
                           </tr>`;
+            }
         }
+        rechargePage.style.display = "none";
+        balancePage.style.display = "none";
+        travellPage.style.display = "none";
         travelPage.style.display = "block";
-        menuPage.style.display = "none";
+        menuPage.style.display = "block";
     });
 }
 function fetchUserDetails() {
@@ -237,6 +264,7 @@ function addUserDetails(user) {
         if (!response.ok) {
             throw new Error('Failed to add contact');
         }
+        alert("SignUp successful");
     });
 }
 function addTicketDetail(ticket) {
