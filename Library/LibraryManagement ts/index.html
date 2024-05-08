@@ -1,0 +1,84 @@
+<html>
+<head>   
+    <title>Library Management</title>
+    <script src="TS/index.js"></script>
+    <link rel="stylesheet" href="CSS/index.css">
+</head>
+<body>
+    <div id="homepage">
+        <h2 class="welcome"></h2> 
+        <button onclick="newUserPage()">Sign Up </button> 
+        <button onclick="existingUserPage()">Sign In</button>  
+    </div>
+
+    <div id="signuppage">
+        <h3>Sign Up</h3>
+        <label for="userName">Name:</label><br>
+        <input type="text" name="userName" id="newuserName"><br><br>
+        <label for="userEmail">Email:</label><br>
+        <input type="text" name="userEmail" id="newuserEmail"><br><br>
+        <label for="userPassword">Password:</label><br>
+        <input type="password" name="userPassword" id="newuserPassword"><br><br>
+        <label for="gender">Gender:</label><br>
+        <input type="text" name="gender" id="newgender"><br><br>
+        <label for="depart">Department:</label><br>
+        <input type="text" name="depart" id="newdepartment"><br><br>
+        <label for="mobile">Mobile Number:</label><br>
+        <input type="text" name="mobile" id="newmobile"><br><br>
+        <button onclick="signup()">Signup</button>
+        <button onclick="homepage()">Back</button>
+    </div>
+
+    <div id="loginpage">
+        <h2>Login</h2>
+        <label for="exsitingEmail">Email:</label><br>
+        <input type="text" name="exsitingEmail" id="exsitingEmail"><br><br>
+        <label for="exsitingPassword">Password:</label><br>
+        <input type="text" name="exsitingPassword" id="exsitingPassword"><br><br>
+        <button onclick="login()">Login</button>
+        <button onclick="homepage()">Back</button>
+    </div>
+
+    <div id="menupage">
+        <button onclick="borrowBook()">Borrow Book</button>
+        <button onclick="showborrowhistory()">Show Borrow Histroy</button>
+        <button onclick="returnpage()">Return Books</button>
+        <button onclick="rechargePage()">Wallet Recharge</button>
+        <button onclick="showBalance()">Wallet Balance</button>
+        <button onclick="homepage()">Logout</button>
+    </div>
+
+    <div id="rechargepage">
+        <h1>Recharge Page<h1>
+        <input type="text" name="" id="rechargeamount" placeholder="Enter Recharge Amount">
+        <button onclick="recharge()">Recharge</button>
+        
+    </div>
+
+    <div id="balanceamount">
+        <h1>Balance Amount</h1>
+        <div id="balance"></div>
+        <button onclick="menu()">Back</button>
+    </div>
+
+    <div id="borrowBookPage">
+        <table id="bookdetails"></table>
+    </div>
+
+    <div id="borrowcountpage">
+        <label>Enter Borrow Book Count</label>
+        <input type="text" id="borrowCount">
+        <button onclick="borrowBookButton()">Borrow</button>
+    </div>
+
+    <div id="borrowHistoryPage">
+        <table id="borrowHistoryTable"></table>
+    </div>
+
+    <div id="returnpage">
+        <table id="returntable"></table>
+    </div>
+
+    
+</body>
+</html>
