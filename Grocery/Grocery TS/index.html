@@ -1,0 +1,104 @@
+<html>
+<head>
+    <title>Online Grocery</title>
+    <script src="TS/index.js"></script>
+    <link rel="stylesheet" href="CSS/index.css">
+</head>
+<body>
+    <div id="homepage">
+        <button onclick="newuser()">Sign up</button>
+        <button onclick="existinguser()">Sign in</button>
+    </div>
+
+    <div id="signuppage">
+        <label>Name:</label><br>
+        <input type="text" id="newusername"><br><br>
+        <label>Email ID:</label><br>
+        <input type="text" id="newusermail"><br><br>
+        <label>Password:</label><br>
+        <input type="password" id="newuserpassword"><br><br>
+        <label>PhoneNumber:</label><br>
+        <input type="text"  id="newuserphone"><br><br>
+        <form action="" enctype="multipart/form-data">
+            <label >Upload Your Photo:</label><br>
+            <input type="file" id="userphoto"><br><br>
+        </form>
+        <button onclick="signup()">Sign up</button>
+        <button onclick="Showhomepage()">Back</button>
+    </div>
+
+    <div id="logginpage">
+        <h2>Login</h2>
+        <label>Email:</label><br>
+        <input type="text" id="existingusermail"><br>
+        <label >Password:</label><br>
+        <input type="password" id="existinguserpassword"><br><br>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="menupage">
+        
+        <button onclick="homebar()">Home</button>
+        <button onclick="grocerypage()">Grocery Details</button>
+        <button onclick="purchaseGrocery()">Purchase</button>
+        <button onclick="mycard()">My Cart</button>
+        <button>Order Details</button>
+        <button onclick="rechargepage()">Recharge</button>
+        <button onclick="Showhomepage()">Logout</button>
+    </div>
+
+    <div id="homebutton">
+        <h1><div id="welcome"></div></h1>
+        <img src="" id="img">
+    </div>
+
+    <div id="grocerypage">
+
+        <br>
+        <button onclick="addgrocerypage()">Add Grocery</button>
+        <br><br>
+        <table id="grocerytable"></table>
+    </div>
+    
+    <div id="addgrocerypage">
+        <form>
+        <label>Grocery Name:</label><br>
+        <input type="text" id="groceryname"><br><br>
+        <label>available Quantity:</label><br>
+        <input type="text" id="availablequantity"><br><br>
+        <label>Expired Date:</label><br>
+        <input type="date" id="expireddate"><br><br>
+        <label>Price per quantity</label><br>
+        <input type="text" id="price"><br><br>
+        <form action="" enctype="multipart/form-data">
+            <label >Upload Grocery Photo :</label><br>
+            <input type="file" id="groceryphoto"><br><br>
+        </form>
+        <button onclick="return groceryadd()">Submit</button>
+    </form>
+    </div>
+
+    <div id="rechargepage">
+        <label>Enter Recharge Amount:</label><br><br>
+        <input type="text" id="balanceamount"><br><br>
+        <button onclick="recharge()">Recharge</button><br><br>
+        <div id="userbalance">Your Balance Amount</div>
+    </div>
+
+    <div id="purchasegrocerypage">
+        <table id="purchasetable"></table>
+    </div>
+
+    <div id="cartquantitypage">
+        <label>Enter Quantity:</label>
+        <input type="text" id="cartquantity">
+        <button onclick="addcartitem()"></button>
+    </div>
+
+    <div id=mycartpage>
+        <table id=carttable></table>
+        <button onclick="palceorder()">Buy</button>
+    </div>
+    
+</body>
+</html>
