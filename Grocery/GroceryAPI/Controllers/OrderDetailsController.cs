@@ -51,7 +51,6 @@ namespace GroceryAPI.Controllers
             }
             orderOld.OrderID = order.OrderID;
             orderOld.ItemName = order.ItemName;
-            orderOld.UserName = order.UserName;
             orderOld.Quantity = order.Quantity;
             orderOld.Price = order.Price;
             return Ok();

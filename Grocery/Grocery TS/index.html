@@ -6,6 +6,8 @@
 </head>
 <body>
     <div id="homepage">
+        <h2>Online Grocery Application</h2>
+        <br><br> 
         <button onclick="newuser()">Sign up</button>
         <button onclick="existinguser()">Sign in</button>
     </div>
@@ -42,20 +44,20 @@
         <button onclick="grocerypage()">Grocery Details</button>
         <button onclick="purchaseGrocery()">Purchase</button>
         <button onclick="mycard()">My Cart</button>
-        <button>Order Details</button>
+        <button oncanplay="ConfirmOrder()">Order Details</button>
         <button onclick="rechargepage()">Recharge</button>
         <button onclick="Showhomepage()">Logout</button>
     </div>
 
     <div id="homebutton">
         <h1><div id="welcome"></div></h1>
-        <img src="" id="img">
+        <img src="" id="img">  
     </div>
 
     <div id="grocerypage">
 
-        <br>
-        <button onclick="addgrocerypage()">Add Grocery</button>
+        <br><br>
+        <button  id="addb" onclick="addgrocerypage()">Add Grocery</button>
         <br><br>
         <table id="grocerytable"></table>
     </div>
@@ -86,18 +88,28 @@
     </div>
 
     <div id="purchasegrocerypage">
+        <br><br>
         <table id="purchasetable"></table>
     </div>
 
     <div id="cartquantitypage">
+        <br><br>
         <label>Enter Quantity:</label>
-        <input type="text" id="cartquantity">
-        <button onclick="addcartitem()"></button>
+        <input type="text" id="cartquantity"><br><br>
+        <button onclick="addcartitem()">Submit</button>
     </div>
 
     <div id=mycartpage>
         <table id=carttable></table>
-        <button onclick="palceorder()">Buy</button>
+        <button onclick="ConfirmOrder()">Buy</button>
+    </div>
+
+    <div id="orderpage">
+        <table id="ordertable"></table>
+    </div>
+
+    <div id="orderhistorypage">
+        <table id="orderhistorytable"></table>
     </div>
     
 </body>

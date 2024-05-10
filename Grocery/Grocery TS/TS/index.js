@@ -35,6 +35,16 @@ function fetchUsers() {
         return yield response.json();
     });
 }
+function fetchOrders() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const apiUrl = 'http://localhost:5069/api/OrderDetails';
+        const response = yield fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error('Failed to fetch contacts');
+        }
+        return yield response.json();
+    });
+}
 function updateUser(id, user) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch(`http://localhost:5069/api/UserDetails/${id}`, {
@@ -63,6 +73,20 @@ function addgrocery(grocery) {
         }
     });
 }
+function addorder(order) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch('http://localhost:5069/api/OrderDetails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        });
+        if (!response.ok) {
+            throw new Error('Failed to add user');
+        }
+    });
+}
 function fetchgrocery() {
     return __awaiter(this, void 0, void 0, function* () {
         const apiUrl = 'http://localhost:5069/api/GroceryDetails';
@@ -78,6 +102,8 @@ function Showhomepage() {
     let homepage = document.getElementById("homepage");
     signuppage.style.display = "none";
     homepage.style.display = "block";
+    let homebutton = document.getElementById("homebutton");
+    homebutton.style.display = "block";
     let menupage = document.getElementById("menupage");
     menupage.style.display = "none";
     let homebuttonpage = document.getElementById("homebutton");
@@ -181,6 +207,8 @@ function homebar() {
     img.src = CurrentLogginUser.userPhoto[0];
     let rechargepage = document.getElementById("rechargepage");
     rechargepage.style.display = "none";
+    let imgtag = document.getElementById("img");
+    imgtag.style.display = "block";
     let grocerypage = document.getElementById("grocerypage");
     grocerypage.style.display = "none";
     let addgrocerypage = document.getElementById("addgrocerypage");
@@ -198,6 +226,8 @@ function grocerypage() {
         menupage.style.display = "block";
         let grocerypage = document.getElementById("grocerypage");
         grocerypage.style.display = "block";
+        let imgtag = document.getElementById("img");
+        imgtag.style.display = "none";
         let addgrocerypage = document.getElementById("addgrocerypage");
         addgrocerypage.style.display = "none";
         let homepage = document.getElementById("homebutton");
@@ -214,7 +244,7 @@ function grocerypage() {
         let grocerytable = document.getElementById("grocerytable");
         grocerytable.innerHTML = "";
         grocerytable.innerHTML = `<tr>
-                            <td>Grocery Name</td>
+                            <td >Grocery Name</td>
                             <td>Available Quantity</td>
                             <td>Expired Date</td>
                             <td>Price</td>
@@ -226,8 +256,8 @@ function grocerypage() {
                                 <td>${grocery.itemName}</td>
                                 <td>${grocery.itemQuantity}</td>
                                 <td>${grocery.unitPrice}</td>
-                                <td>${grocery.itemExpiredDate}</td>
-                                <td><img src="${grocery.itemPhoto}"></td>
+                                <td>${grocery.itemExpiredDate.split('T')[0]}</td>
+                                <td class="tableElement"><img id="groceryimg" src="${grocery.itemPhoto}"></td>
                                 </tr>`;
         });
     });
@@ -245,6 +275,8 @@ function addgrocerypage() {
     grocerypage.style.display = "none";
     let rechargepage = document.getElementById("rechargepage");
     rechargepage.style.display = "none";
+    let imgtag = document.getElementById("img");
+    imgtag.style.display = "none";
 }
 function groceryadd() {
     var _a;
@@ -277,12 +309,15 @@ function groceryadd() {
             grocerypage();
         };
         reader.readAsDataURL(photo);
+        grocerypage();
     }
     return false;
 }
 function purchaseGrocery() {
     return __awaiter(this, void 0, void 0, function* () {
         const grocerys = yield fetchgrocery();
+        let imgtag = document.getElementById("img");
+        imgtag.style.display = "none";
         let grocerypage = document.getElementById("grocerypage");
         grocerypage.style.display = "none";
         let grocerytable = document.getElementById("purchasetable");
@@ -298,9 +333,9 @@ function purchaseGrocery() {
         grocerytable.innerHTML = `<tr>
                             <td>Grocery Name</td>
                             <td>Available Quantity</td>
+                            <td>Price</td>
                             <td>Expired Date</td>
                             <td>Image</td>
-                            <td>Price</td>
                             <td>Cart</td>
                             </tr>`;
         grocerys.forEach(grocery => {
@@ -308,9 +343,9 @@ function purchaseGrocery() {
                                 <td>${grocery.itemName}</td>
                                 <td>${grocery.itemQuantity}</td>
                                 <td>${grocery.unitPrice}</td>
-                                <td>${grocery.itemExpiredDate}</td>
-                                <td><img id="img" src="${grocery.itemPhoto}"></td>
-                                <td><button onclick="addcart(${grocery.itemID})">Add Cart</button></td>
+                                <td>${grocery.itemExpiredDate.split('T')[0]}</td>
+                                <td><img id="itemimg" src="${grocery.itemPhoto}"></td>
+                                <td><button id="cartbutton" onclick="addcart(${grocery.itemID})">Add Cart</button></td>
                                 </tr>`;
         });
     });
@@ -327,6 +362,8 @@ function addcart(id) {
         grocerypage.style.display = "none";
         let rechargepage = document.getElementById("rechargepage");
         rechargepage.style.display = "none";
+        let imgtag = document.getElementById("img");
+        imgtag.style.display = "none";
         let grocerys = yield fetchgrocery();
         grocerys.forEach(grocery => {
             if (grocery.itemID == id) {
@@ -337,45 +374,134 @@ function addcart(id) {
 }
 function addcartitem() {
     return __awaiter(this, void 0, void 0, function* () {
-        let cartquantity = document.getElementById("cartquantity");
-        let cartItem = {
-            itemID: selectItem.itemID,
-            cartQuantity: Number(cartquantity),
-            itemName: selectItem.itemName,
-            cartprice: selectItem.unitPrice
-        };
-        cartList.push(cartItem);
+        let cartquantity = parseInt(document.getElementById("cartquantity").value);
+        if (cartquantity > 0 && cartquantity <= selectItem.itemQuantity) {
+            let cartItem = {
+                itemID: selectItem.itemID,
+                cartQuantity: cartquantity,
+                itemName: selectItem.itemName,
+                cartprice: selectItem.unitPrice
+            };
+            cartList.push(cartItem);
+        }
+        else {
+            alert("Enter Valid Quantity");
+        }
     });
 }
 function mycard() {
-    let mycartpage = document.getElementById("mycartpage");
-    mycartpage.style.display = "block";
-    let purchasegrocerypage = document.getElementById("purchasegrocerypage");
-    purchasegrocerypage.style.display = "none";
-    let cartquantitypage = document.getElementById("cartquantitypage");
-    cartquantitypage.style.display = "none";
-    let grocerypage = document.getElementById("grocerypage");
-    grocerypage.style.display = "none";
-    let rechargepage = document.getElementById("rechargepage");
-    rechargepage.style.display = "none";
-    let carttable = document.getElementById("carttable");
-    carttable.innerHTML = "";
-    carttable.innerHTML = `<tr>
-                        <td>Item Quantity</td>
+    if (cartList.length == 0) {
+        alert("Your Cart is Empty");
+    }
+    else {
+        let mycartpage = document.getElementById("mycartpage");
+        mycartpage.style.display = "block";
+        let purchasegrocerypage = document.getElementById("purchasegrocerypage");
+        purchasegrocerypage.style.display = "none";
+        let cartquantitypage = document.getElementById("cartquantitypage");
+        cartquantitypage.style.display = "none";
+        let grocerypage = document.getElementById("grocerypage");
+        grocerypage.style.display = "none";
+        let rechargepage = document.getElementById("rechargepage");
+        rechargepage.style.display = "none";
+        let imgtag = document.getElementById("img");
+        imgtag.style.display = "none";
+        let carttable = document.getElementById("carttable");
+        carttable.innerHTML = "";
+        carttable.innerHTML = `<tr>
                         <td>Item Name</td>
+                        <td>Item Quantity</td>
                         <td>Cart Price</td>
                         </tr>`;
-    cartList.forEach(cartItem => {
-        carttable.innerHTML += `<tr>
+        cartList.forEach(cartItem => {
+            carttable.innerHTML += `<tr>
                             <td> ${cartItem.itemName}</td>
                             <td> ${cartItem.cartQuantity} </td>
                             <td> ${cartItem.cartprice}</td>
                             </tr>`;
+        });
+    }
+}
+function ConfirmOrder() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let items = yield fetchgrocery();
+        let orders = yield fetchOrders();
+        let totalpurchaseamount = 0;
+        let priceamount = 0;
+        let flag = false;
+        cartList.forEach(cart => {
+            items.forEach(item => {
+                if (cart.itemID == item.itemID) {
+                    if (cart.cartQuantity < item.itemQuantity) {
+                        totalpurchaseamount += cart.cartQuantity * cart.cartprice;
+                        if (totalpurchaseamount <= CurrentLogginUser.walletBalance) {
+                            flag = true;
+                            alert("Order Successfully Purchased");
+                        }
+                        else {
+                            alert("Insufficient Balance");
+                        }
+                    }
+                    else {
+                        alert(selectItem.itemName + "is out of stock");
+                    }
+                }
+            });
+        });
+        let itemIDs = [];
+        let itemNames = [];
+        let itemQuantities = [];
+        let cartprices = [];
+        if (flag) {
+            for (let i = 0; i < cartList.length; i++) {
+                itemIDs.push(cartList[i].itemID);
+                itemNames.push(cartList[i].itemName);
+                itemQuantities.push(cartList[i].cartQuantity);
+                cartprices.push(cartList[i].cartprice);
+            }
+            let addorders = {
+                orderID: undefined,
+                itemID: itemIDs,
+                itemName: itemNames,
+                quantity: itemQuantities,
+                price: cartprices,
+                billAmount: totalpurchaseamount,
+                purchaseDate: new Date()
+            };
+            CurrentLogginUser.walletBalance -= totalpurchaseamount;
+            updateUser(CurrentLogginUser.userID, CurrentLogginUser);
+            addorder(addorders);
+        }
+    });
+}
+function orderHiistory() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let orderHistorylist = yield fetchOrders();
+        let ordertable = document.getElementById("orderhistorytable");
+        ordertable.innerHTML = "";
+        orderHistorylist.forEach(order => {
+            ordertable.innerHTML +=
+                `
+                          <h2 id="orderID${order.orderID}"></h2>
+                          <table>
+                            <tr>
+                            <td>Order ID<td>
+                            <td>Product ID</td>
+                            <td>Product Name</td>
+                            <td>Product Price</td>
+                            <td>Product Quantity</td>
+                            </tr>
+                            <tbody>`;
+        });
     });
 }
 function rechargepage() {
     let rechargepage = document.getElementById("rechargepage");
     rechargepage.style.display = "block";
+    let imgtag = document.getElementById("img");
+    imgtag.style.display = "none";
+    let purchasegrocerypage = document.getElementById("purchasegrocerypage");
+    purchasegrocerypage.style.display = "none";
     let userbalance = document.getElementById("userbalance");
     userbalance.innerHTML = "Your Balance Amount is : " + CurrentLogginUser.walletBalance.toString();
 }
